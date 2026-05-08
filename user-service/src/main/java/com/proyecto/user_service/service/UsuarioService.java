@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import com.proyecto.user_service.exception.ResourceNotFoundException;
 import com.proyecto.user_service.model.Usuario;
 import com.proyecto.user_service.repository.UsuarioRepository;
 
@@ -26,13 +27,13 @@ public class UsuarioService {
     @Transactional(readOnly = true)
     public Usuario findById(Long id) {
         return usuarioRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con id: " + id));
     }
 
     @Transactional(readOnly = true)
     public Usuario findByUsername(String username) {
         return usuarioRepository.findByEmail(username)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con email: " + username));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con email: " + username));
     }
 
     @Transactional

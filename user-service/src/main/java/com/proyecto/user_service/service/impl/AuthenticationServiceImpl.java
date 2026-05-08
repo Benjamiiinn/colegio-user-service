@@ -2,6 +2,7 @@ package com.proyecto.user_service.service.impl;
 
 
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -10,6 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.proyecto.user_service.enums.Rol;
 import com.proyecto.user_service.enums.TokenType;
+import com.proyecto.user_service.exception.BusinessRuleException;
+import com.proyecto.user_service.exception.ResourceNotFoundException;
 import com.proyecto.user_service.model.Usuario;
 import com.proyecto.user_service.repository.UsuarioRepository;
 import com.proyecto.user_service.request.AuthenticationRequest;
@@ -39,16 +42,16 @@ public class AuthenticationServiceImpl implements AuthService{
 
         if (rolSolicitado == Rol.DOCENTE || rolSolicitado == Rol.ADMIN) {
                 if (!email.endsWith("@colegioohiggins.cl")) {
-                        throw new IllegalArgumentException("Los docentes y administradores deben usar el dominio @colegioohiggins.cl");
+                        throw new BusinessRuleException("Los docentes y administradores deben usar el dominio @colegioohiggins.cl");
                 }
         } else if (rolSolicitado == Rol.ESTUDIANTE) {
                 if (!email.endsWith("@alumnos.colegioohiggins.cl")) {
-                        throw new IllegalArgumentException("Los estudiantes deben usar el dominio @alumnos.colegioohiggins.cl");
+                        throw new BusinessRuleException("Los estudiantes deben usar el dominio @alumnos.colegioohiggins.cl");
                 }
         }
 
         if (usuarioRepository.existsByEmail(email)) {
-                throw new IllegalArgumentException("El correo ya está registrado");
+                throw new BusinessRuleException("El correo ya está registrado");
         }
 
         var usuario = Usuario.builder()
@@ -80,10 +83,18 @@ public class AuthenticationServiceImpl implements AuthService{
 
     @Override
     public AuthResponse authenticate(AuthenticationRequest request) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+        } catch (BadCredentialsException e) {
+            throw new BadCredentialsException("Email o contraseña incorrectas");
+        } catch (Exception e) {
+                throw new BusinessRuleException("Esta cuenta ha sido desactivada");
+        }
 
-        var usuario = usuarioRepository.findByEmail(request.getEmail()).orElseThrow(() -> new IllegalArgumentException("Email o contraseña incorrectas"));
+        var usuario = usuarioRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
+                
         var roles = usuario.getRol().getAuthorities()
                 .stream()
                 .map(SimpleGrantedAuthority::getAuthority)
