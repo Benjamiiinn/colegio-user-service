@@ -2,6 +2,7 @@ package com.proyecto.user_service.request;
 
 import com.proyecto.user_service.enums.Rol;
 import com.proyecto.user_service.validation.StrongPassword;
+import com.proyecto.user_service.validation.ValidRut;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -18,6 +19,7 @@ import lombok.NoArgsConstructor;
 public class RegisterRequest {
 
     @NotBlank(message = "El RUT es obligatorio")
+    @ValidRut
     private String rut;
 
     @NotBlank(message = "El nombre es obligatorio")

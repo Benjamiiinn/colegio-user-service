@@ -9,4 +9,6 @@ import com.proyecto.user_service.model.Usuario;
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     Optional<Usuario> findByEmail(String email);
     boolean existsByEmail(String email);
+    boolean existsByRut(String rut);
+    Optional<Usuario> findByRut(String rut);
 }
