@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.proyecto.user_service.exception.ResourceNotFoundException;
 import com.proyecto.user_service.model.Usuario;
 import com.proyecto.user_service.repository.UsuarioRepository;
+import com.proyecto.user_service.util.RutUtils;
 
 import lombok.RequiredArgsConstructor;
 
@@ -35,6 +36,13 @@ public class UsuarioService {
         return usuarioRepository.findByEmail(username)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con email: " + username));
     }
+
+    @Transactional
+        public Usuario findByRut(String rut) {
+            String rutBuscado = RutUtils.formatearRut(rut);
+            return usuarioRepository.findByRut(rutBuscado)
+                    .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con RUT: " + rut));
+        }
 
     @Transactional
     public Usuario save(Usuario usuario) {

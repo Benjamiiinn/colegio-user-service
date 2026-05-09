@@ -21,6 +21,7 @@ import com.proyecto.user_service.response.AuthResponse;
 import com.proyecto.user_service.service.AuthService;
 import com.proyecto.user_service.service.JwtService;
 import com.proyecto.user_service.service.RefreshTokenService;
+import com.proyecto.user_service.util.RutUtils;
 
 import lombok.RequiredArgsConstructor;
 
@@ -54,8 +55,14 @@ public class AuthenticationServiceImpl implements AuthService{
                 throw new BusinessRuleException("El correo ya está registrado");
         }
 
+        if (usuarioRepository.existsByRut(request.getRut())) {
+                throw new BusinessRuleException("Ya existe un usuario registrado con este RUT");
+        }
+
+        String rutNormalizado = RutUtils.formatearRut(request.getRut());
+
         var usuario = Usuario.builder()
-                .rut(request.getRut())
+                .rut(rutNormalizado)
                 .nombres(request.getNombres())
                 .apellidos(request.getApellidos())
                 .email(email)

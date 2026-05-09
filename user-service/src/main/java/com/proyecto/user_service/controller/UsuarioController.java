@@ -28,6 +28,11 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioService.findById(id));
     }
 
+    @GetMapping("/rut/{rut}")
+    public ResponseEntity<Usuario> obtenerUsuarioPorRut(@PathVariable String rut) {
+        return ResponseEntity.ok(usuarioService.findByRut(rut));
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<Usuario> actualizarUsuario(@PathVariable Long id, @RequestBody Usuario usuario) {
         return ResponseEntity.ok(usuarioService.update(id, usuario));
