@@ -44,6 +44,8 @@ public class SecurityConfig {
             .authorizeHttpRequests(request -> request
                     //Login y Registro
                     .requestMatchers("/api/v1/auth/**", "/api/auth/**").permitAll()
+                    //Temporalmente se deja abierto para pruebas, luego se restringirá a ADMIN
+                    .requestMatchers(HttpMethod.GET, "/api/v1/usuarios/*/exists").permitAll()
 
                     //Gestion de usuarios
                     .requestMatchers(HttpMethod.POST, "/api/v1/usuarios/**").hasRole("ADMIN")
