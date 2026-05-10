@@ -43,6 +43,11 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioService.listarUsuarios());
     }
 
+    @GetMapping("/{id}/exists")
+    public ResponseEntity<Boolean> existeUsuario(@PathVariable Long id) {
+        return ResponseEntity.ok(usuarioService.existsById(id));
+    }
+
     @PostMapping
     public ResponseEntity<Usuario> crearUsuario(@RequestBody Usuario usuario) {
         return ResponseEntity.ok(usuarioService.save(usuario));

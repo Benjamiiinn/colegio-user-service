@@ -38,11 +38,16 @@ public class UsuarioService {
     }
 
     @Transactional
-        public Usuario findByRut(String rut) {
-            String rutBuscado = RutUtils.formatearRut(rut);
-            return usuarioRepository.findByRut(rutBuscado)
-                    .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con RUT: " + rut));
-        }
+    public Usuario findByRut(String rut) {
+        String rutBuscado = RutUtils.formatearRut(rut);
+        return usuarioRepository.findByRut(rutBuscado)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con RUT: " + rut));
+    }
+
+    @Transactional
+    public boolean existsById(Long id) {
+        return usuarioRepository.existsById(id);
+    }
 
     @Transactional
     public Usuario save(Usuario usuario) {
