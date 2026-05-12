@@ -1,0 +1,19 @@
+CREATE TABLE usuarios (
+    id BIGSERIAL PRIMARY KEY,
+    rut VARCHAR(11) UNIQUE NOT NULL,
+    nombres VARCHAR(100) NOT NULL,
+    apellidos VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    rol VARCHAR(20) NOT NULL,
+    enabled BOOLEAN DEFAULT TRUE NOT NULL
+);
+
+CREATE TABLE refresh_token (
+    id BIGSERIAL PRIMARY KEY,
+    token VARCHAR(255) UNIQUE NOT NULL,
+    expiry_date TIMESTAMP(6) WITH TIME ZONE NOT NULL,
+    revoked BOOLEAN NOT NULL,
+    usuario_id BIGINT,
+    CONSTRAINT fk_usuario_token FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
+);

@@ -43,7 +43,7 @@ public class SecurityConfig {
                 .accessDeniedHandler(accessDeniedHandler))
             .authorizeHttpRequests(request -> request
                     //Login y Registro
-                    .requestMatchers("/api/v1/auth/**", "/api/auth/**").permitAll()
+                    .requestMatchers("/api/v1/auth/**", "/api/auth/**", "/error").permitAll()
                     //Temporalmente se deja abierto para pruebas, luego se restringirá a ADMIN
                     .requestMatchers(HttpMethod.GET, "/api/v1/usuarios/*/exists").permitAll()
 
