@@ -1,5 +1,3 @@
--- Contraseña para todos los usuarios: MiPassword123!
-
 -- 1. Insertamos un Apoderado
 INSERT INTO usuarios (rut, nombres, apellidos, email, password, rol)
 VALUES ('11111111-1', 'Juan', 'Perez', 'juan@gmail.cl', 'MiPassword123!.', 'APODERADO');

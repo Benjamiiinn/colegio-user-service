@@ -44,7 +44,12 @@ public class JwtServiceImpl implements JwtService {
 
     @Override
     public String generateToken(UserDetails userDetails) {
-        return generateToken(new HashMap<>(), userDetails);
+        Map<String, Object> claims = new HashMap<>();
+        var roles = userDetails.getAuthorities().stream()
+                .map(auth -> auth.getAuthority())
+                .toList();
+        claims.put("roles", roles);
+        return buildToken(claims, userDetails, jwtExpiration);
     }
 
     @Override
@@ -61,9 +66,9 @@ public class JwtServiceImpl implements JwtService {
         return extractClaim(token, Claims::getExpiration);
     }
 
-    private String generateToken(Map<String, Object> extractClaims, UserDetails userDetails) {
+    /*private String generateToken(Map<String, Object> extractClaims, UserDetails userDetails) {
         return buildToken(extractClaims, userDetails, jwtExpiration);
-    }
+    }*/
 
     @Override
     public ResponseCookie generateJwtCookie(String jwt) {
