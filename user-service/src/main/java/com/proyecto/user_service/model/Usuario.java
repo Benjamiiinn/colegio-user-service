@@ -46,7 +46,7 @@ public class Usuario implements UserDetails {
 
     @Column(columnDefinition = "boolean default true")
     @Builder.Default
-    private boolean enabled = true;
+    private Boolean enabled = true;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

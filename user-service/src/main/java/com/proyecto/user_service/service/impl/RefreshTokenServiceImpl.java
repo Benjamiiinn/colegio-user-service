@@ -87,13 +87,13 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     }
 
     @Override
-    public ResponseCookie generateRefreshTokenCookie(String token) {
-        return ResponseCookie.from(refreshTokenName, token)
-                .path("/")
-                .maxAge(refreshExpiration / 1000)
+    public ResponseCookie generateRefreshTokenCookie(String refreshToken) {
+        return ResponseCookie.from(refreshTokenName, refreshToken)
                 .httpOnly(true)
-                .secure(true)
-                .sameSite("Strict")
+                .secure(false)
+                .path("/")
+                .maxAge(15 * 24 * 60 * 60)
+                .sameSite("Lax")
                 .build();
     }
 

@@ -76,8 +76,8 @@ public class JwtServiceImpl implements JwtService {
                 .path("/")
                 .maxAge(24 * 60 * 60)
                 .httpOnly(true)
-                .secure(true)
-                .sameSite("Strict")
+                .secure(false)
+                .sameSite("Lax")
                 .build();
     }
 
