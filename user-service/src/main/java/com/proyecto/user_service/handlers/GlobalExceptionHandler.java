@@ -1,7 +1,6 @@
 package com.proyecto.user_service.handlers;
 
 import java.time.Instant;
-import java.util.Arrays;
 import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
-import com.proyecto.user_service.enums.Rol;
 import com.proyecto.user_service.exception.BusinessRuleException;
 import com.proyecto.user_service.exception.ResourceNotFoundException;
 import com.proyecto.user_service.exception.TokenException;
