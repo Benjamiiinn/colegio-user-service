@@ -36,7 +36,7 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.GET, "/api/v1/usuarios/*/exists").permitAll()
                     .requestMatchers(HttpMethod.POST, "/api/v1/usuarios/**").hasRole("ADMIN")
                     .requestMatchers(HttpMethod.DELETE, "/api/v1/usuarios/**").hasRole("ADMIN")
-                    .requestMatchers(HttpMethod.GET, "/api/v1/usuarios/**").hasAnyRole("ADMIN", "DOCENTE")
+                    .requestMatchers(HttpMethod.GET, "/api/v1/usuarios/**").hasAnyRole("ADMIN", "DOCENTE", "ESTUDIANTE")
                     .anyRequest().authenticated()
                 )
             .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS)) 
