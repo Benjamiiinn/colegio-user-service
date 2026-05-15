@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.WebUtils;
 
+import com.proyecto.user_service.model.Usuario;
 import com.proyecto.user_service.service.JwtService;
 
 import io.jsonwebtoken.Claims;
@@ -50,8 +51,8 @@ public class JwtServiceImpl implements JwtService {
                 .toList();
         claims.put("roles", roles);
         
-        if (userDetails instanceof com.proyecto.user_service.model.Usuario) {
-            com.proyecto.user_service.model.Usuario usuario = (com.proyecto.user_service.model.Usuario) userDetails;
+        if (userDetails instanceof Usuario) {
+            Usuario usuario = (Usuario) userDetails;
             claims.put("userId", usuario.getId());
         }
         
