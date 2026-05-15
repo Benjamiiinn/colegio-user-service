@@ -49,6 +49,12 @@ public class JwtServiceImpl implements JwtService {
                 .map(auth -> auth.getAuthority())
                 .toList();
         claims.put("roles", roles);
+        
+        if (userDetails instanceof com.proyecto.user_service.model.Usuario) {
+            com.proyecto.user_service.model.Usuario usuario = (com.proyecto.user_service.model.Usuario) userDetails;
+            claims.put("userId", usuario.getId());
+        }
+        
         return buildToken(claims, userDetails, jwtExpiration);
     }
 
