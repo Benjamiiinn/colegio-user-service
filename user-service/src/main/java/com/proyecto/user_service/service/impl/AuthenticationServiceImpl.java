@@ -49,6 +49,10 @@ public class AuthenticationServiceImpl implements AuthService{
                 if (!email.endsWith("@alumnos.colegioohiggins.cl")) {
                         throw new BusinessRuleException("Los estudiantes deben usar el dominio @alumnos.colegioohiggins.cl");
                 }
+        } else if (rolSolicitado == Rol.APODERADO) {
+                if (!email.endsWith("@gmail.com") && !email.endsWith("@gmail.cl")) {
+                        throw new BusinessRuleException("Los apoderados deben usar correo gmail.com o gmail.cl");
+                }
         }
 
         if (usuarioRepository.existsByEmail(email)) {
