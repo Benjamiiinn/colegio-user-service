@@ -71,6 +71,10 @@ public class UsuarioService {
             usuarioExistente.setPassword(passwordEncoder.encode(usuarioDetails.getPassword()));
         }
 
+        if (usuarioDetails.getEnabled() != null) {
+            usuarioExistente.setEnabled(usuarioDetails.getEnabled());
+        }
+
         return usuarioRepository.save(usuarioExistente);
     }
 

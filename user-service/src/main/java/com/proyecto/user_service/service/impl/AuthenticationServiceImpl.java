@@ -105,6 +105,10 @@ public class AuthenticationServiceImpl implements AuthService{
 
         var usuario = usuarioRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
+
+        if (!usuario.getEnabled()) {
+            throw new BusinessRuleException("Esta cuenta ha sido desactivada");
+        }
                 
         var roles = usuario.getRol().getAuthorities()
                 .stream()
