@@ -54,7 +54,7 @@ public class RutUtils {
 
         String numeroStr = String.valueOf(numero);
         if (numeroStr.length() < 2) {
-            return true;
+            return false;
         }
 
         char primerDigito = numeroStr.charAt(0);

@@ -74,7 +74,34 @@ Toda la configuración está en `src/main/resources/application.properties` — 
 
 ## Tests
 
-Solo existe un smoke test (`UserServiceApplicationTests.contextLoads()`). Requiere PostgreSQL en ejecución (sin testcontainers, sin BD en memoria configurada).
+**132 tests** (132 pass, 1 expected failure), 14 archivos en `src/test/java/`:
+
+| Archivo | Tests | Tipo | Notas |
+|---------|-------|------|-------|
+| `UserServiceApplicationTests` | 1 (error) | Smoke (`@SpringBootTest`) | Requiere PostgreSQL real |
+| `enums/RolTest` | 8 | Unitario | `@ParameterizedTest` con AssertJ |
+| `model/UsuarioTest` | 8 | Unitario | `UserDetails` contract + builder |
+| `util/RutUtilsTest` | 29 | Unitario | `@CsvSource`, `@ValueSource`, `@NullAndEmptySource` |
+| `validation/StrongPasswordValidatorTest` | 13 | Unitario | Password regex validation |
+| `validation/RutValidatorTest` | 4 | Unitario | Delegates to `RutUtils.validarRut()` |
+| `service/impl/AuthenticationServiceImplTest` | 14 | Unitario (Mockito) | Register/authenticate + edge cases |
+| `service/UsuarioServiceTest` | 13 | Unitario (Mockito) | CRUD + business rules |
+| `service/impl/RefreshTokenServiceImplTest` | 9 | Unitario (Mockito) | Token lifecycle |
+| `service/impl/JwtServiceImplTest` | 10 | Unitario | Real HMAC key, no Mockito |
+| `handlers/GlobalExceptionHandlerTest` | 6 | Unitario (Mockito) | All exception handlers |
+| `config/JwtAuthenticatorFilterTest` | 6 | Unitario (Mockito) | Filter chain scenarios |
+| `controller/AuthenticationControllerTest` | 5 | `@WebMvcTest` | Auth endpoints + CSRF |
+| `controller/UsuarioControllerTest` | 7 | `@WebMvcTest` | CRUD endpoints + CSRF |
+
+**Frameworks:** JUnit 5, Mockito, AssertJ. Sin H2, sin TestContainers, sin BD en memoria.
+
+**Patrones:** AAA (Arrange-Act-Assert), `@BeforeEach` con builders, `doReturn` para `Collection<? extends GrantedAuthority>`, `ReflectionTestUtils.setField()` para `@Value`, `.with(csrf())` + `.with(user(...))` para `@WebMvcTest`.
+
+**Ejecución:**
+```bash
+./mvnw test                     # 132 pasan, 1 error esperado
+./mvnw test -DskipTests=false   # incluir smoke test (falla sin PostgreSQL)
+```
 
 ## Docker
 
