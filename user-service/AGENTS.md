@@ -13,7 +13,7 @@
 ```bash
 cd user-service
 ./mvnw clean package -DskipTests   # compilar
-./mvnw test                         # ejecutar tests (solo 1 smoke test)
+./mvnw test                         # ejecutar tests (~132 tests)
 ./mvnw spring-boot:run              # servidor de desarrollo
 ```
 
