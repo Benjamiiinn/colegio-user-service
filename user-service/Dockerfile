@@ -8,6 +8,7 @@ RUN mvn clean package -DskipTests
 
 # Etapa 2: Ejecución (Run)
 FROM eclipse-temurin:21-jre-alpine
+RUN apk add --no-cache curl
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 COPY entrypoint.sh /entrypoint.sh
