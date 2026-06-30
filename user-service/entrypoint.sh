@@ -17,7 +17,7 @@ fetch() {
 
 # Funcion helper: extrae la primera IPv4 de un JSON
 extract_ip() {
-  echo "$1" | grep -oE "\"IPv4Addresses\"[[:space:]]*:[[:space:]]*\[[^]]*\]" | head -1 | grep -oE "[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}" | head -1
+  echo "$1" | tr -d '\n' | grep -oE "\"IPv4Addresses\"[[:space:]]*:[[:space:]]*\[[^]]*\]" | head -1 | grep -oE "[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}" | head -1
 }
 
 # 1) Intentar con la env var que Fargate suele setear
@@ -41,7 +41,7 @@ if [ -n "$TASK_METADATA" ]; then
   if [ -n "$RESP" ]; then
     IP=$(extract_ip "$RESP")
     if [ -n "$IP" ]; then
-      export EUREKA_INSTANCE_IP_ADDRESS="$IP"
+      JAVA_OPTS="$JAVA_OPTS -Deureka.instance.ip-address=$IP"
       echo "[entrypoint] Eureka instance IP: $EUREKA_INSTANCE_IP_ADDRESS (from $TASK_METADATA)"
     else
       echo "[entrypoint] WARN: no se encontro IP en respuesta de $TASK_METADATA"
@@ -54,5 +54,5 @@ else
   echo "[entrypoint] WARN: no se pudo alcanzar metadata endpoint"
 fi
 
-exec java -jar app.jar "$@"
+exec java $JAVA_OPTS -jar app.jar "$@"
 
